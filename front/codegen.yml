@@ -1,0 +1,17 @@
+overwrite: true
+schema: 
+  - "../graphql-scheme/scheme.graphql"
+documents: 
+  - "../graphql-scheme/query/*.graphql"
+  - "../graphql-scheme/mutations/*.graphql"
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      withHooks: true
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"
