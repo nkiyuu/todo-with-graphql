@@ -9,7 +9,7 @@ import {
 } from './generated/graphql'
 
 const client = new ApolloClient({
-  uri: 'http://localhost:8000/grahql',
+  uri: 'http://localhost:8080/grahql',
 })
 
 function TodoList() {
