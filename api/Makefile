@@ -12,5 +12,8 @@ create-database: .data/db.sqlite3
 migration-up: bin/migrate create-database
 	./bin/migrate -database sqlite3://.data/db.sqlite3 -path ./migrations up
 
-migratin-down: 
+migration-down: 
 	./bin/migrate -database sqlite3://.data/db.sqlite3 -path ./migrations down
+
+server: migration-up
+	GO111MODULE=on go run server.go

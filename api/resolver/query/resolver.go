@@ -3,31 +3,33 @@ package query
 import (
 	"context"
 	"fmt"
+	"log"
 
-	"github.com/nkiyuu/todo-app-with-graphql/api/graph/model"
+	"github.com/nkiyuu/todo-app-with-graphql/api/db"
+	gm "github.com/nkiyuu/todo-app-with-graphql/api/graph/model"
+	"github.com/nkiyuu/todo-app-with-graphql/api/model"
 )
 
 // Resolver    **************************
 type Resolver struct{}
 
 // Todo ****************
-func (r *Resolver) Todo(ctx context.Context, id string) (*model.Todo, error) {
+func (r *Resolver) Todo(ctx context.Context, id string) (*gm.Todo, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
 // Todos ****************
-func (r *Resolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	todos := []*model.Todo{
-		{
-			ID:     "hoge",
-			Title:  "Todo 1",
-			IsDone: false,
-		},
-		{
-			ID:     "fuga",
-			Title:  "Todo 2",
-			IsDone: false,
-		},
+func (r *Resolver) Todos(ctx context.Context) ([]*gm.Todo, error) {
+	db := db.DB()
+	todos := []model.Todo{}
+	if err := db.Select(&todos, "SELECT * FROM todo"); err != nil {
+		log.Printf("Select exec err: %v", err)
 	}
-	return todos, nil
+
+	var res []*gm.Todo
+	for _, todo := range todos {
+		res = append(res, todo.APIModel())
+	}
+
+	return res, nil
 }
