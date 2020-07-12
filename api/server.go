@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/nkiyuu/todo-app-with-graphql/api/graph/generated"
 	"github.com/nkiyuu/todo-app-with-graphql/api/resolver"
+	"github.com/rs/cors"
 )
 
 const defaultPort = "8080"
@@ -27,7 +28,7 @@ func main() {
 
 	r.HandleFunc("/", playground.Handler("GraphQL playground", "/graphql"))
 	r.Handle("/graphql", graphqlHandler)
-	http.Handle("/", r)
+	http.Handle("/", cors.AllowAll().Handler(r))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
